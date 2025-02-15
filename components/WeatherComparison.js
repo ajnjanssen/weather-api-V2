@@ -65,7 +65,7 @@ const WeatherComparison = () => {
   );
 
   return (
-    <div className="flex gap-8 border border-base-content/5 rounded-box p-8">
+    <div className="flex flex-col lg:flex-row gap-8 border border-base-content/5 rounded-box p-8">
       <div>
         <div className="flex space-x-4 w-full py-4 min-h-16">
           <label className="input w-full">

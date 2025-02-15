@@ -92,8 +92,6 @@ const WeatherComparison = () => {
               type="search"
               className="grow"
             />
-            <kbd className="kbd kbd-sm">⌘</kbd>
-            <kbd className="kbd kbd-sm">K</kbd>
           </label>
           <button className="btn btn-primary px-8" onClick={handleGetWeather}>
             Get Weather

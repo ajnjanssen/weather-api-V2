@@ -2,7 +2,7 @@
 
 This project is a weather application built with Next.js that allows users to fetch and compare weather data for different cities. It utilizes the OpenWeatherMap API to retrieve weather information based on zip codes.
 
-![Weather App Screenshot](./public/weather-app-screenshot.png)
+![Weather App Screenshot](./public/original.png)
 
 ## Features
 

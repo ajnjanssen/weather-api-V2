@@ -2,6 +2,8 @@
 
 This project is a weather application built with Next.js that allows users to fetch and compare weather data for different cities. It utilizes the OpenWeatherMap API to retrieve weather information based on zip codes.
 
+![Weather App Screenshot](./public/weather-app-screenshot.png)
+
 ## Features
 
 - Display current weather information including temperature, pressure, and humidity.
@@ -32,24 +34,28 @@ my-nextjs-project
 ## Setup Instructions
 
 1. Clone the repository:
+
    ```
-   git clone <repository-url>
+   git clone https://github.com/ajnjanssen/weather-api-V2
    cd my-nextjs-project
    ```
 
-2. Install dependencies:
+2. Install dependencies using Yarn:
+
    ```
-   npm install
+   yarn install
    ```
 
 3. Create a `.env.local` file in the root directory and add your OpenWeatherMap API key:
+
    ```
    NEXT_PUBLIC_API_KEY=your_api_key_here
    ```
 
 4. Run the development server:
+
    ```
-   npm run dev
+   yarn dev
    ```
 
 5. Open your browser and navigate to `http://localhost:3000` to view the application.
@@ -59,6 +65,10 @@ my-nextjs-project
 - Enter a zip code in the input field to fetch the current weather data for that location.
 - The weather information will be displayed in a card format.
 - You can compare weather data for multiple cities, which will be stored in local storage.
+
+## Styling
+
+This project uses Tailwind CSS and DaisyUI for styling. Tailwind CSS is a utility-first CSS framework, and DaisyUI is a plugin for Tailwind CSS that provides pre-designed components.
 
 ## License
 

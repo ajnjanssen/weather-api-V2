@@ -1,47 +1,60 @@
-import { useEffect } from "react";
-import L from "leaflet";
+import React, { useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 
-const Map = () => {
+const Map = ({ weatherData = [] }) => {
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const mapContainer = document.getElementById("map");
-      if (mapContainer && !mapContainer._leaflet_id) {
-        // Ensure Leaflet isn't re-initialized
-        const map = L.map(mapContainer).setView([52.23, 5.55], 7);
-        window.map = map;
+      const L = require("leaflet");
 
-        L.tileLayer(
-          `https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibnltcGg0NCIsImEiOiJjazczZnppMXEwYnMyM2tudmRkODRpcXN5In0.7Ni9qFzGMFQlwSzeou4L-g`,
-          {
-            maxZoom: 18,
-            tileSize: 512,
-            zoomOffset: -1,
-          }
-        ).addTo(map);
+      if (!mapInstanceRef.current) {
+        mapInstanceRef.current = L.map(mapRef.current).setView(
+          [52.3676, 4.9041],
+          8
+        ); // Default to Amsterdam
 
-        fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=Amsterdam&appid=9a947b2b6130ce57fb318b02748ff301`
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Weather data:", data);
-            const marker = L.marker([data.coord.lat, data.coord.lon]).addTo(
-              map
-            );
-            const tempCelsius = (data.main.temp - 273.15).toFixed(2);
-            marker
-              .bindPopup(`<b>${data.name}</b><br>Temperature: ${tempCelsius}°C`)
-              .openPopup();
-          })
-          .catch((error) =>
-            console.error("Error fetching weather data:", error)
-          );
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(mapInstanceRef.current);
       }
-    }
-  }, []);
 
-  return <div id="map" className="min-w-[600px] min-h-[800px]"></div>;
+      weatherData.forEach((city) => {
+        const { coord, main, name } = city;
+        const marker = L.marker([coord.lat, coord.lon]).addTo(
+          mapInstanceRef.current
+        );
+        marker.bindPopup(`
+          <b>${name}</b><br>
+          Temp: ${main.temp} °C<br>
+          Feels Like: ${main.feels_like} °C<br>
+          Min Temp: ${main.temp_min} °C<br>
+          Max Temp: ${main.temp_max} °C<br>
+          Pressure: ${main.pressure} hPa<br>
+          Humidity: ${main.humidity} %
+        `);
+      });
+    }
+
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, [weatherData]);
+
+  return (
+    <div
+      className="rounded-xl"
+      ref={mapRef}
+      id="map"
+      style={{ height: "500px", width: "100%" }}
+    ></div>
+  );
 };
 
-export default Map;
+export default dynamic(() => Promise.resolve(Map), { ssr: false });

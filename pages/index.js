@@ -27,27 +27,11 @@ export default function Home() {
   };
 
   return (
-    <div>
-      <h1 className="text-6xl font-bold">Weather App</h1>
-      <div className="flex gap-8">
-        <div className="w-full">
-          <form className="" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              className="input"
-              value={zipCode}
-              onChange={handleInputChange}
-              placeholder="Enter Zip Code"
-            />
-            <button className="btn" type="submit">
-              Get Weather
-            </button>
-          </form>
-          {weatherData && <WeatherCard data={weatherData} />}
-          <WeatherComparison />
-        </div>
-        <Map />
-      </div>
+    <div className="container mx-auto p-8">
+      <h1 className="text-6xl font-bold text-primary">Weather App</h1>
+
+      {weatherData && <WeatherCard data={weatherData} />}
+      <WeatherComparison />
     </div>
   );
 }

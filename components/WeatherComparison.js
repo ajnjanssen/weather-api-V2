@@ -67,7 +67,7 @@ const WeatherComparison = () => {
   return (
     <div className="flex flex-col lg:flex-row gap-8 border border-base-content/5 rounded-box p-8">
       <div>
-        <div className="flex space-x-4 w-full py-4 min-h-16">
+        <div className="flex flex-col lg:flex-row space-x-4 w-full py-4 min-h-16 gap-4">
           <label className="input w-full">
             <svg
               className="h-[1em] opacity-50"
@@ -93,7 +93,7 @@ const WeatherComparison = () => {
               className="grow"
             />
           </label>
-          <button className="btn btn-primary px-8" onClick={handleGetWeather}>
+          <button className="btn btn-secondary px-8" onClick={handleGetWeather}>
             Get Weather
           </button>
         </div>

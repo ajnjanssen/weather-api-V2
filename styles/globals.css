@@ -1,11 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: light --sunset, dark --prefersdark;
-  root: ":root";
-  include: ;
-  exclude: ;
-  prefix: ;
-  logs: true;
+  themes: sunset --default, dark --prefersdark;
 }
 
 .leaflet-bottom leaflet-right {

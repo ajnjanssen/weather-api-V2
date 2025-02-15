@@ -1,11 +1,13 @@
 import fetch from "node-fetch";
 
 export default async function handler(req, res) {
-  const { postalCode } = req.query;
+  const { postalCode, countryCode } = req.query;
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-  const url = `http://api.openweathermap.org/data/2.5/weather?zip=${postalCode}&appid=${apiKey}&units=metric`;
+  const url = `http://api.openweathermap.org/data/2.5/weather?zip=${postalCode},${countryCode}&appid=${apiKey}&units=metric`;
 
-  console.log(`Fetching weather data for postal code: ${postalCode}`);
+  console.log(
+    `Fetching weather data for postal code: ${postalCode}, country code: ${countryCode}`
+  );
   console.log(`Using API URL: ${url}`);
 
   try {

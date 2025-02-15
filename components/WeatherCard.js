@@ -1,24 +1,13 @@
 import React from "react";
 
-const WeatherCard = ({
-  city,
-  temperature,
-  feelsLike,
-  minTemp,
-  maxTemp,
-  pressure,
-  humidity,
-}) => {
+const WeatherCard = ({ city, temperature, feelsLike, minTemp, maxTemp }) => {
   return (
     <tr>
-      <th>1</th>
       <td>{city}</td>
       <td>{temperature}</td>
       <td>{feelsLike}</td>
       <td>{minTemp}</td>
       <td>{maxTemp}</td>
-      <td>{pressure}</td>
-      <td>{humidity}</td>
     </tr>
   );
 };

@@ -8,6 +8,10 @@
   logs: true;
 }
 
+.leaflet-bottom leaflet-right {
+  display: none !important;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

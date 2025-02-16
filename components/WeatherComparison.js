@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import WeatherTable from "./WeatherTable";
 import dynamic from "next/dynamic";
+import Notify from "./notify";
 
 const Map = dynamic(() => import("./Map"), { ssr: false });
 
 const WeatherComparison = () => {
   const [weatherData, setWeatherData] = useState([]);
-  const [error, setError] = useState(null);
   const [postalCode, setPostalCode] = useState("");
+  const [notifications, setNotifications] = useState([]);
   const prevWeatherDataRef = useRef();
 
   useEffect(() => {
@@ -24,15 +25,30 @@ const WeatherComparison = () => {
         `/api/weather-comparison?postalCode=${postalCode}&countryCode=${countryCode}`
       );
       if (!response.ok) {
-        throw new Error("Failed to fetch weather comparison data");
+        const errorText = await response.text();
+        setNotifications((prev) => [
+          ...prev,
+          {
+            type: "error",
+            message: `Failed to fetch weather comparison data: ${errorText}`,
+          },
+        ]);
+        return;
       }
       const data = await response.json();
       const newData = { ...data, addedAt: new Date().toISOString() };
       const updatedWeatherData = [...weatherData, newData];
       setWeatherData(updatedWeatherData);
       localStorage.setItem("weatherData", JSON.stringify(updatedWeatherData));
+      setNotifications((prev) => [
+        ...prev,
+        { type: "success", message: "Weather data fetched successfully" },
+      ]);
     } catch (err) {
-      setError("Error fetching data");
+      setNotifications((prev) => [
+        ...prev,
+        { type: "error", message: "Error fetching data: " + err.message },
+      ]);
       console.error("Error fetching data:", err);
     }
   };
@@ -54,9 +70,12 @@ const WeatherComparison = () => {
     fetchData(postalCode);
   };
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+  const handlePostalCodeChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= 4) {
+      setPostalCode(value);
+    }
+  };
 
   // Sort weather data based on the time they were added
   const sortedWeatherData = weatherData.sort(
@@ -65,6 +84,7 @@ const WeatherComparison = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 border border-base-content/5 rounded-box p-8">
+      <Notify notifications={notifications} />
       <div>
         <div className="flex flex-col lg:flex-row space-x-4 w-full py-4 min-h-16 gap-4">
           <label className="input w-full">
@@ -86,9 +106,10 @@ const WeatherComparison = () => {
             </svg>
             <input
               value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
+              onChange={handlePostalCodeChange}
               placeholder="Enter postal code"
-              type="search"
+              type="number"
+              maxLength="4"
               className="grow"
             />
           </label>

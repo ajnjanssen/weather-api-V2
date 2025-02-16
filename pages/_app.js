@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 function MyApp({ Component, pageProps }) {
   return (
     <div data-theme="cupcake">
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </div>
   );
 }

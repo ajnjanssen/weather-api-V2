@@ -14,8 +14,7 @@ export default async function handler(req, res) {
     const response = await fetch(url);
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("Failed to fetch weather data:", errorText);
-      throw new Error(`Failed to fetch weather data: ${errorText}`);
+      return res.status(response.status).json({ error: errorText });
     }
     const data = await response.json();
     res.status(200).json(data);

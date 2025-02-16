@@ -31,7 +31,7 @@ const WeatherComparison = () => {
         setNotifications([
           {
             type: "error",
-            message: `Postalcode not found: <b>${postalCode}</b>`,
+            message: `Postalcode not found: ${postalCode}`,
           },
         ]);
         return;

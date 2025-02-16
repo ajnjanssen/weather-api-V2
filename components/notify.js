@@ -26,7 +26,7 @@ const Notify = ({ notifications }) => {
       : "alert alert-info";
 
   return (
-    <div className="toast toast-top toast-end">
+    <div className="toast toast-top toast-end z-50">
       <div className={alertClass}>
         <span>{visibleNotification.message}</span>
       </div>

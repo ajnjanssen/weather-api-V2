@@ -9,6 +9,7 @@ const WeatherComparison = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [postalCode, setPostalCode] = useState("");
   const [notifications, setNotifications] = useState([]);
+  const [location, setLocation] = useState(null);
   const prevWeatherDataRef = useRef();
 
   useEffect(() => {
@@ -26,27 +27,32 @@ const WeatherComparison = () => {
       );
       if (!response.ok) {
         const errorText = await response.text();
-        setNotifications((prev) => [
-          ...prev,
+        console.log(errorText);
+        setNotifications([
           {
             type: "error",
-            message: `Failed to fetch weather comparison data: ${errorText}`,
+            message: `Postalcode not found: <b>${postalCode}</b>`,
           },
         ]);
         return;
       }
       const data = await response.json();
       const newData = { ...data, addedAt: new Date().toISOString() };
-      const updatedWeatherData = [...weatherData, newData];
+
+      // Check for duplicate entries and update if necessary
+      const updatedWeatherData = weatherData.filter(
+        (item) => item.name !== data.name
+      );
+      updatedWeatherData.push(newData);
+
       setWeatherData(updatedWeatherData);
       localStorage.setItem("weatherData", JSON.stringify(updatedWeatherData));
-      setNotifications((prev) => [
-        ...prev,
+      setLocation({ lat: data.coord.lat, lon: data.coord.lon });
+      setNotifications([
         { type: "success", message: "Weather data fetched successfully" },
       ]);
     } catch (err) {
-      setNotifications((prev) => [
-        ...prev,
+      setNotifications([
         { type: "error", message: "Error fetching data: " + err.message },
       ]);
       console.error("Error fetching data:", err);
@@ -119,7 +125,12 @@ const WeatherComparison = () => {
         </div>
         <WeatherTable weatherData={sortedWeatherData} />
       </div>
-      <Map weatherData={sortedWeatherData} />
+      <div
+        className="h-full z-20"
+        style={{ height: "550px", width: "100%", minHeight: "400px" }}
+      >
+        <Map location={location} />
+      </div>
     </div>
   );
 };

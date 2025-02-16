@@ -2,7 +2,7 @@ import React from "react";
 
 const WeatherTable = ({ weatherData }) => {
   return (
-    <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+    <div className="overflow-x-auto overflow-y-auto rounded-box border border-base-content/5 bg-base-100 max-h-92">
       <table className="table">
         <thead>
           <tr>

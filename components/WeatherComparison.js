@@ -19,10 +19,9 @@ const WeatherComparison = () => {
 
   const fetchData = async (postalCode) => {
     const countryCode = "nl"; // Set the country code
-    const fullPostalCode = `${postalCode},${countryCode}`;
     try {
       const response = await fetch(
-        `/api/weather-comparison?postalCode=${fullPostalCode}`
+        `/api/weather-comparison?postalCode=${postalCode}&countryCode=${countryCode}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch weather comparison data");
